@@ -5,6 +5,7 @@ import { db } from './config/firebase';
 import { WishProps } from './Components/Wishes/Wish';
 import firebase from 'firebase/app';
 
+
 function App() {
 
   const [wishes, setWishes] = useState<WishProps[]>([])
@@ -12,8 +13,8 @@ function App() {
 
   useEffect(() => {
     db.collection('wishes').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-      const wishData = snapshot.docs.map(doc => doc.data()) as WishProps[]
-      setWishes(wishData)
+      const wishDoc = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() })) as WishProps[]
+      setWishes(wishDoc)
     })
   }, [])
 

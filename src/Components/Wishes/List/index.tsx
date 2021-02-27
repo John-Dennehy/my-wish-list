@@ -11,9 +11,8 @@ const WishList: React.FC<WishListProps> = ({ wishes }) => {
     <ul>
       {wishes.map(wish => (
         <Wish
-          name={wish.name}
-          description={wish.description}
-          url={wish.url}
+          id={wish.id}
+          data={wish.data}
         />
       ))}
     </ul>
