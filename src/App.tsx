@@ -1,8 +1,8 @@
 import React, { MouseEvent, ChangeEvent, useState, useEffect } from 'react';
-import './style/App.css'
-import WishList from './Components/Wishes/List';
+import './styles/App.css'
+import WishList from './components/Wishes/List';
 import { db } from './config/firebase';
-import { WishProps } from './Components/Wishes/Wish';
+import { WishProps } from './components/Wishes/Wish';
 import firebase from 'firebase/app';
 
 
@@ -10,12 +10,15 @@ function App() {
 
   const [wishes, setWishes] = useState<WishProps[]>([])
   const [inputValue, setInputValue] = useState('')
+  const wishCollection = db.collection('wishes').orderBy('timestamp', 'desc')
 
   useEffect(() => {
-    db.collection('wishes').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-      const wishDoc = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() })) as WishProps[]
-      setWishes(wishDoc)
-    })
+    wishCollection.onSnapshot(snapshot => {
+        const wishDoc = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() })) as WishProps[]
+        setWishes(wishDoc)
+      }
+      )
+
   }, [])
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
